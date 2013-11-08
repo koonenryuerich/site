@@ -11,75 +11,47 @@ include 'header.php';
 $query = "";
 $result = "";
 
-if (isset($_POST['signup'])){ //User just returned from form.php
-	//database insertion logic here
-	$eventid = $_POST['eventid'];
-	$notes = sanitizeString($_POST['notes']);
-	if ($notes == "Write things you want us to know about here (reasons why you might not be able to come, etc.)")
-		 $notes = "";
-	$query = "SELECT * FROM events WHERE id = '$eventid'";
-	$result = queryMySql($query);
-	$eventname = mysql_result($result, 0,'eventname');
-	$query = "INSERT into signups(eventid,studentid,extra) values($eventid, $userid ,'$notes')";
-	$result = queryMySql($query);
-	
 
-	//email the student a confirmation email
-	require 'library/phpmailer/class.phpmailer.php';
-	
-	$mail = new PHPMailer;
-	$mail->IsSMTP();
-	$mail->Host = 'smtp.gmail.com';
-	$mail->Port       = 587;
-	$mail->SMTPAuth = true;
-	$mail->Username = 'kinkaidcommunityservice@gmail.com';
-	$mail->Password = 'kinkaidcs2014';
-	$mail->SMTPSecure = 'tls';
-	
-	$subject = "Event Confirmation Email";//add subject
-	$message = "You have succesfully signed up for Event: $eventname!"; // add message
-	$recipient =  "$ufirstname"."."."$ulastname"."@kinkaid.org";
-	$mail->AddAddress($recipient);
-	
-	$mail->From = 'kinkaidcommunityservice@gmail.com';
-	$mail->FromName = 'Kinkaid Community Service Council';
-	
-	$mail->Subject = $subject;
-	$mail->Body = $message;
-	$mail->Send();
-	
-	echo <<<END
-	</head>
-	<body>
-		<script>
-			
-		
-		bootbox.alert("Thanks for signing up for $eventname, $ufirstname!", function() {
-				window.location.replace('signup.php');
-		});			
-				
-		
-		</script>
-END;
-   		
-	}
-else{
-	//put any specific styles here
-	echo <<<END
+//put any specific styles here
+echo <<<END
 	<script>
 		$(document).ready(function(){
 			console.log("fdjsl");
 			$('td button.signup').click(function(){
-				var id = 1;
+			    var button = this;
+
+				var id = $userid;
 				var eventname = $(this).parent().siblings(":first").text();
 				var eventid = $('input[name=eventid]').val();
 				var data = 'id='+id+'&eventid='+eventid;
-				bootbox.confirm("<h3>Signing Up for "+eventname+"</h1><hr><p>Please write anything you want us to know about here, or just hit the OK button! This field is NOT required. <br><form id = 'signup' action ='signup.php'><textarea style = 'width:50%' name = 'notes'></textarea></form>",function(result){
+				bootbox.signup("Signing up for event: "+eventname,function(result) {
 					if (result){
-						$('#signup').submit();
+
+
+					    var notes = result;
+					    if (result == 'default'){
+					        var data = 'id='+id+'&eventid='+eventid;
+					    }else{
+					        var data = 'id='+id+'&eventid='+eventid+'&notes='+notes;
+					    }
+
+						$.ajax(
+							{
+								type: "POST",
+								url:"signupajax.php",
+								data:data,
+								cache: false,
+								success: function()
+								{
+									console.log(data);
+									button.disabled = true;
+									bootbox.alert("Thanks for signing up, $ufirstname!");
+
+								}
+							});
+
 
 					}
-
 
 				});
 
@@ -100,7 +72,7 @@ else{
 	</head>
 END;
 	
-}
+
 
 
 if ($loggedin == false || $loggedin == null){
