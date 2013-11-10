@@ -14,6 +14,18 @@ $result = "";
 
 //put any specific styles here
 echo <<<END
+
+    <style>
+    #loading-indicator {
+          position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -32px; /* -1 * image width / 2 */
+            margin-top: -32px;  /* -1 * image height / 2 */
+            display: block;
+    }
+    </style>
+    <script src="plugins/blockui.js"></script>
 	<script>
 		$(document).ready(function(){
 			console.log("fdjsl");
@@ -54,11 +66,16 @@ echo <<<END
 					}
 
 				});
-
-
-
 			});
+            $(document).ajaxSend(function(event, request, settings) {
+                $.blockUI({ message: '<h1>Signing Up...<img src="images/ajax-loader.gif" /> </h1>' });
+                //$('#loading-indicator').show();
+            });
 
+            $(document).ajaxComplete(function(event, request, settings) {
+                $.unblockUI();
+                //$('#loading-indicator').hide();
+            });
 
 
 
@@ -89,6 +106,10 @@ $result = queryMySql($query);
 //output navbar
 echo <<<END
 		<body>
+
+		    <img src="images/ajax-loader.gif" id="loading-indicator" style="display:none" />
+
+
 
 		    <div class="container">
 		
