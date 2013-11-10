@@ -158,13 +158,11 @@ if ($loggedin == false){
 			$_SESSION['ufirstname'] = $firstlast[0];
 			$_SESSION['ulastname'] = $firstlast[1];
 			$loggedin = true;
-			echo "logged in";
 
 			//redirect to page that user came from
 
 			$url = $_SESSION['redirecturl'];
 			if ($url != ""){
-				echo $url;
 				echo "<script>window.location.replace('$url');</script>";
 			}
 			else{
