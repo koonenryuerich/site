@@ -67,7 +67,7 @@ END;
 				echo '<td>'.mysql_result($studentresult, 0,'grade').'</td>';
 				$noteresult = queryMySql("SELECT * FROM signups where studentid=$id AND eventid=$eventid");
 				echo "<td>".mysql_result($studentresult, 0,'advisor');
-				echo "<td >YES / NO</td";
+				echo "<td >YES / NO</td>";
 				echo "</tr>";
 			}
 					

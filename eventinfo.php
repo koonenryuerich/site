@@ -143,14 +143,13 @@ END;
 			<script>
 				$(document).ready(function()
 				{
-					$('td button.delete').click(function()
-					{
-					
-						
+
+				    $(document.body).on('click', 'td button.delete', function() {
+
 						var id = $(this).attr('value');
 						var data = 'id='+id+'&eventid='+$eventid;
 						var parent = $(this).parent().parent();
-					
+
 						bootbox.confirm("Are you sure you want to remove this volunteer from the list?", function(result) {
 				        if (result) {
 							//var parent = $(this).parent().parent();
@@ -165,16 +164,18 @@ END;
 									parent.fadeOut('slow', function()
 									{
 										$(this).remove();
-						
+
+
 									});
-								
+
 								}
 							});
-					            
-					   		 }
-						});     
 
-					});
+					   		 }
+						});
+                    });
+
+
 									
 									
 					$('#closeevent').submit(function(e) {
@@ -199,17 +200,19 @@ END;
 						
 						if (id!='default'){
 							var data = 'id='+id+'&eventid='+$eventid;
-									
+							info = new Array();
 							$.ajax(
 							{
 								type: "POST",
 								url:"addvolunteer.php",
 								data:data,
 								cache: false,
-								success: function()
+								success: function(data)
 								{
-									$('#addstudentform').submit();
-								
+									info = JSON.parse(data);
+									$('#volunteers tr:last').after('<tr><td>'+info.firstname+'</td><td>'+info.lastname+'</td><td>'+info.grade+'</td><td></td><td><button  class = \'delete btn btn-delete\' value = '+id+'>Delete Volunteer</button></td></tr>');
+                                    $('#studentpicker option[value='+id+']').remove();
+								    $('.selectpicker').selectpicker('refresh'); //requried to update the ui component after deleting an option
 								}
 							});		
 									
@@ -278,7 +281,7 @@ END;
 				$noteresult = mysql_query($query);
 				echo '<td>'.mysql_result($noteresult, 0,'extra').'</td>';
 				
-				echo "<td ><button  class = 'delete btn btn-delete' value = '$id'>Delete Volunteer</button></td";
+				echo "<td ><button  class = 'delete btn btn-delete' value = '$id'>Delete Volunteer</button></td>";
 				echo "</tr>";
 			}
 			
