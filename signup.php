@@ -24,11 +24,20 @@ echo <<<END
             margin-top: -32px;  /* -1 * image height / 2 */
             display: block;
     }
+    .icon {
+        height:15%;
+        width:8%;
+
+
+    }
+    p {
+        word-wrap: break-word;
+    }
     </style>
     <script src="plugins/blockui.js"></script>
 	<script>
 		$(document).ready(function(){
-			console.log("fdjsl");
+
 			$('td button.signup').click(function(){
 			    var button = this;
 
@@ -36,7 +45,9 @@ echo <<<END
 				var eventname = $(this).parent().siblings(":first").text();
 				var eventid = $('input[name=eventid]').val();
 				var data = 'id='+id+'&eventid='+eventid;
-				bootbox.signup("Signing up for event: "+eventname,function(result) {
+				var eventinfo = $(this).parent().siblings(":first").find('input[type=hidden]').val();
+
+				bootbox.signup("Signing up for event: "+eventname+'|'+eventinfo,function(result) {
 					if (result){
 
 
@@ -55,7 +66,6 @@ echo <<<END
 								cache: false,
 								success: function()
 								{
-									console.log(data);
 									button.disabled = true;
 									bootbox.alert("Thanks for signing up, $ufirstname!");
 
@@ -69,12 +79,10 @@ echo <<<END
 			});
             $(document).ajaxSend(function(event, request, settings) {
                 $.blockUI({ message: '<h1>Signing Up...<img src="images/ajax-loader.gif" /> </h1>' });
-                //$('#loading-indicator').show();
             });
 
             $(document).ajaxComplete(function(event, request, settings) {
                 $.unblockUI();
-                //$('#loading-indicator').hide();
             });
 
 
@@ -180,14 +188,21 @@ for ($i = 0;$i<$numrows;++$i){
 		continue;
 	
 	echo"<tr>";
-	echo '<td>'.mysql_result($result, $i,'eventname').'</td>';
+
+    $eventDescription = mysql_result($result,$i,'description');
+
+	echo "<td>".mysql_result($result, $i,'eventname')."<input type='hidden' name='eventinfo' value = '$eventDescription'></td>";
 	
 	$eventdate = explode('-', mysql_result($result, $i,'eventdate'));
 	
 	echo '<td>'.$months[(int)$eventdate[1]].' '.(int)$eventdate[2].', '.$eventdate[0].'</td>';
 	
 	echo '<td>'.mysql_result($result, $i,'eventtime').'</td>';
-	echo '<td>'.mysql_result($result, $i,'max').'</td>';
+    $max = mysql_result($result, $i,'max');
+    if ($max == 0)
+	    echo '<td></td>';
+    else
+        echo '<td>'.$max.'</td>';
 	//echo '<td>'.mysql_result($result, $i,'current').'</td>';
 	echo '<td>'.mysql_result($result, $i,'supervisor').'</td>';
 	

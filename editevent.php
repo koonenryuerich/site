@@ -148,7 +148,7 @@ END;
 					<div class = "control-group">
 						<label class = "control-label" for ="input01">Brief Description:</label>
 						<div class = "controls">
-							<textarea name = "description" cols "200" rows = "6" wrap ="type" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
+							<textarea name = "description" cols "200" rows = "6" wrap ="type" >
 $description</textarea>
 						</div>
 					</div>

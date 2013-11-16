@@ -11,6 +11,7 @@ if ($loggedin){
 	echo <<<END
 	<a style="float:right" href = 'logout.php'>Logout</a>
 	
+	
 END;
 }			
 echo <<<END

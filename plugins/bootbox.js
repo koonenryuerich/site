@@ -31,7 +31,7 @@ window.bootbox = window.bootbox || (function init($, undefined) {
             text:
                 "<input class='bootbox-input bootbox-input-text form-control' autocomplete=off type=text />",
             signup:
-                "<p>Please write anything you would like us to know about here. This field is NOT required. Otherwise, just click the 'OK' button!</p><textarea name = 'notes' style='width:90%' rows = 5 wrap ='type' value='default'>Default</textarea>"
+                "<p>Please write anything you would like us to know about here. This field is NOT required. Otherwise, just click the 'OK' button!</p><br><textarea name = 'notes' style='width:90%' rows = 5 wrap ='type' value='default'>Default</textarea>"
         }
     };
 
@@ -376,6 +376,14 @@ window.bootbox = window.bootbox || (function init($, undefined) {
             value: ""
         };
 
+
+
+        //Information processing for the event
+        var sepArgument = arguments[0].split('|');
+        var eventInfo = sepArgument[1];
+        var trimmedString = arguments[0].substring(0, arguments[0].indexOf('|'));
+        arguments[0] = trimmedString;
+
         options = validateButtons(
             mergeArguments(defaults, arguments, ["title", "callback"]),
             ["cancel", "confirm"]
@@ -420,12 +428,12 @@ window.bootbox = window.bootbox || (function init($, undefined) {
 
         // create the input
         input = $(templates.inputs.signup);
-        console.log(input[1]);
         input.val(options.value);
 
         // now place it in our form
+        var infoString = "<strong>Event Information:</strong><p>"+eventInfo+"</p><hr>";
+        form.append(infoString);
         form.append(input);
-        console.log(form.find('.notes'));
 
         form.on("submit", function(e) {
             e.preventDefault();

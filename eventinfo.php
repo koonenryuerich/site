@@ -149,10 +149,11 @@ END;
 						var id = $(this).attr('value');
 						var data = 'id='+id+'&eventid='+$eventid;
 						var parent = $(this).parent().parent();
+						var firstName = parent.find('td:first-child').text();
+                        var lastName = parent.find('td:nth-child(2)').text();
 
 						bootbox.confirm("Are you sure you want to remove this volunteer from the list?", function(result) {
 				        if (result) {
-							//var parent = $(this).parent().parent();
 							$.ajax(
 							{
 								type: "POST",
@@ -164,6 +165,8 @@ END;
 									parent.fadeOut('slow', function()
 									{
 										$(this).remove();
+										$('#studentpicker').append('<option value='+id+'>'+firstName+' '+lastName+'</option>');
+								        $('.selectpicker').selectpicker('refresh'); //requried to update the ui component after deleting an option
 
 
 									});
