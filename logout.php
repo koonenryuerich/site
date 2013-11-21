@@ -10,6 +10,4 @@ session_destroy();
 echo"<script>window.location.replace('signup.php');</script>";
 
 
-header( 'Location: index.php' ) ;
-
 ?>

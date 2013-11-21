@@ -5,7 +5,7 @@
 
 $query = "";
 $result = "";
-include 'functions.php';
+include '../functions.php';
 
 
 if (isset($_POST['id']) && isset($_POST['eventid'])){

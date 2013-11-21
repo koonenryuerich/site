@@ -2,7 +2,7 @@
 /*Ajax 
 Script*/
 
-include 'header.php';
+include '../header.php';
 
 if (isset($_POST['id']) && isset($_POST['eventid'])){
 
@@ -25,7 +25,7 @@ if (isset($_POST['id']) && isset($_POST['eventid'])){
         $eventname = mysql_result($result, 0,'eventname');
 
         //email the student a confirmation email
-		require 'library/phpmailer/class.phpmailer.php';
+		require '../library/phpmailer/class.phpmailer.php';
 		
 		$mail = new PHPMailer;
 		$mail->IsSMTP();

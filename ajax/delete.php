@@ -6,7 +6,7 @@
 */
 $query = "";
 $result = "";
-include 'header.php';
+include '../header.php';
 
 
 if (isset($_POST['id']) && isset($_POST['eventid'])){

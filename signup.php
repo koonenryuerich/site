@@ -8,15 +8,15 @@
 include 'header.php';
 
 
-$query = "";
+$query = "";//initialize variables to prevent security threats
 $result = "";
 
 
-//put any specific styles here
+//put any specific styles/scripts here
 echo <<<END
 
     <style>
-    #loading-indicator {
+    #loading-indicator { /*some styles for the loading indicator*/
           position: absolute;
             left: 50%;
             top: 50%;
@@ -24,13 +24,8 @@ echo <<<END
             margin-top: -32px;  /* -1 * image height / 2 */
             display: block;
     }
-    .icon {
-        height:15%;
-        width:8%;
 
-
-    }
-    p {
+    p { /*this is so the description text that appears in the modal when a user signs up does not keep on going horizontally forever*/
         word-wrap: break-word;
     }
     </style>
@@ -38,12 +33,12 @@ echo <<<END
 	<script>
 		$(document).ready(function(){
 
-			$('td button.signup').click(function(){
+			$('td button.signup').click(function(){ //sets a click handler for the signup button next to events
 			    var button = this;
 
-				var id = $userid;
-				var eventname = $(this).parent().siblings(":first").text();
-				var eventid = $('input[name=eventid]').val();
+				var id = $userid; //userid is a session variable initialized in headers.php
+				var eventname = $(this).parent().siblings(":first").text(); //selects the parent, the row, and then gets the text from the first <td>
+				var eventid = $(this).parent().find('input[type=hidden]').val();
 				var data = 'id='+id+'&eventid='+eventid;
 				var eventinfo = $(this).parent().siblings(":first").find('input[type=hidden]').val();
 
@@ -61,7 +56,7 @@ echo <<<END
 						$.ajax(
 							{
 								type: "POST",
-								url:"signupajax.php",
+								url:"ajax/signupajax.php",
 								data:data,
 								cache: false,
 								success: function()
@@ -115,7 +110,6 @@ $result = queryMySql($query);
 echo <<<END
 		<body>
 
-		    <img src="images/ajax-loader.gif" id="loading-indicator" style="display:none" />
 
 
 

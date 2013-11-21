@@ -157,7 +157,7 @@ END;
 							$.ajax(
 							{
 								type: "POST",
-								url:"delete.php",
+								url:"ajax/delete.php",
 								data:data,
 								cache: false,
 								success: function()
@@ -207,7 +207,7 @@ END;
 							$.ajax(
 							{
 								type: "POST",
-								url:"addvolunteer.php",
+								url:"ajax/addvolunteer.php",
 								data:data,
 								cache: false,
 								success: function(data)
