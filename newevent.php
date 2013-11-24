@@ -1,5 +1,12 @@
 <?php
 
+
+
+/*
+ * A form for creating new events
+ *
+ */
+
 $username  = 'admin';
 $password = 'kinkaidcs2014';
 
@@ -22,6 +29,8 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){
 				
 				$(document).ready(function()
 				{
+                    //This javascript checks if the required fields have been filled
+
 					$('button[type="submit"]').attr('disabled','disabled');
 					$('input[type="text"]').keyup(function()
 					{
@@ -35,7 +44,7 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){
 		
 					});
 					
-					$('.selectpicker').selectpicker();
+					$('.selectpicker').selectpicker(); //Calls a function that turns <select> elements into pretty bootstrap ones (third-party library)
 				
 				});
 			</script>

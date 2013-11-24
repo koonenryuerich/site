@@ -1,5 +1,8 @@
 <?php
-//include 'header.php';
+
+
+
+//Output a footer below a horizontal line. If user is logged in, he can click the link to logout
 
 echo <<<_END
 	<hr>

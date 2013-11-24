@@ -57,7 +57,12 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){ //promp
 		
 END;
 		
-		
+		/*Handler for 'editevent.php'
+		 * This if statement is triggered when the user submits the form from editevent.php
+		 * Changes the event details as described by the user
+		 *
+		 */
+
 		if (isset($_POST['edit']) && isset($_POST['eventid'])  && isset($_POST['time']) && isset($_POST['location'])){ //handles editevent.php form submit
 			if ($_POST['eventid'] == null ||  $_POST['time'] == "" || $_POST['location'] == ""){
 				echo "<script>alert('Error editing event. Please try again.');</script>";
@@ -84,8 +89,16 @@ END;
 				window.location.replace('dashboard.php');});</script>"; //message and redirect
 			}
 		}
-		
-		if (isset($_POST['closeevent'])){ //handles eventinfo->closeevent form submission
+
+        /*
+         * Handler for 'closeevent'
+         * This if statement is triggered when the user clicks the 'Close Event' button on the eventinfo.php page
+         * This will close an active event, but not delete its data from the database
+         * Adds the defaultcredit amount to every student who participated in the event,
+         * and sets the event as 'closed'
+         */
+
+		if (isset($_POST['closeevent'])){
 			$eventid = $_POST['eventid'];
 			
 			$query = "SELECT * FROM events WHERE id = $eventid";
@@ -98,7 +111,7 @@ END;
 			$numrows = mysql_num_rows($result);
 			for ($i = 0;$i<$numrows;$i++){
 				$studentid = mysql_result($result, $i,'studentid');
-				$query = "UPDATE volunteers SET credits = credits + $credits where id=$studentid";
+				$query = "UPDATE volunteers SET credits = credits + $credits where id=$studentid"; //adds credits to students
 				$studenresult = queryMySql($query);
 			}
 			
@@ -109,7 +122,16 @@ END;
 			echo "<body><script>bootbox.alert('Event: $eventname has been closed.', function() {
 				window.location.replace('dashboard.php');});</script>";
 		}
-		if (isset($_POST['deleteevent'])){ //handles eventinfo->delete event form submission
+
+
+        /*
+         * Handler for 'delete event'
+         * This if statement is triggered when the admin is viewing a closed event and clicks 'delete event'
+         * This will delete all data related to the event from the databases 'events' and 'signups'
+         *
+         */
+
+		if (isset($_POST['deleteevent'])){
 			$eventid = $_POST['eventid'];
 				
 			$query = "SELECT * FROM events WHERE id = $eventid";
@@ -130,7 +152,11 @@ END;
 			window.location.replace('dashboard.php');});</script>";
 		}
 		
-		
+		/*
+		 * Handler for newevent.php
+		 * This if statement is triggered when the admin submits the form on newevent.php
+		 * It will insert a new event into the 'events' database
+		 */
 		if (isset($_POST['eventname']) && isset($_POST['time']) && isset($_POST['location']) && isset($_POST['create']) && isset($_POST['credits'])){ //handles newevent.php form submission
 			if ($_POST['eventname'] == "" ||  $_POST['time'] == "" || $_POST['location'] == "" && $_POST['credits'] == ""){
 				echo "<script>alert('Error creating event. Please try again.');</script>";
@@ -160,7 +186,7 @@ END;
 			}
 		}
 
-		//After all form submissions have been checked, display a navbar and then a table of events
+		//After all form submissions have been checked and handled, display a navbar and then a table of events
 		echo <<<END
 			<body>
 
@@ -193,9 +219,13 @@ END;
 		        </div><!-- /.navbar -->
 		      </div>
 END;
-		
+
+        //Create a button that allows the admin to create a new event
 		echo "<div class = 'container'>\n<h3>Events</h3><a href = 'newevent.php'><button class='btn btn-primary' style='display:inline;'>Create New Event</button></a>";
-		echo <<<END
+
+        //Create a button that allows admin to download an excel file with all the information stored in the databases
+        //Also, add a handler to the button that allows the admin to confirm his/her decision
+        echo <<<END
 			<form id="downloadexcel" style = 'display:inline;float:right' action = 'downloadexcel.php' method = 'post' >
 					<input type = 'hidden' name = 'downloadexcel'/>
 					<button type = 'submit' class = 'btn btn-export' name = 'downloadexcel'>Export Database to Excel</button>		
@@ -214,6 +244,7 @@ END;
 		</script>
 			
 END;
+        //Output a table of active events
 		echo <<<END
 		<h3>Current</h3>
 		<table class = 'table'>
@@ -228,7 +259,7 @@ END;
 		</tr>
 END;
 		
-		//select OPEN events ordered from recent to those most farthest in the future
+		//select OPEN events ordered from most recent to those most farthest in the future
 		$query = "SELECT * FROM events where closed=0 and eventdate > NOW() ORDER BY eventdate";
 		
 		$result = queryMySql($query);
@@ -265,6 +296,13 @@ END;
 				echo '<td>'.mysql_result($result, $i,'max').'</td>';
 			}
 			echo '<td>'.mysql_result($result, $i,'supervisor').'</td>';
+
+            /*
+              * Output a button in the very last <td> that takes the user to eventinfo.php as an PAST event
+              * The difference is the name of the hidden field submitted as a post value
+              * An active event sends:<input type = "hidden" name = "eventid" value = "'.mysql_result($result, $i,'id').'"/>
+              * A closed one sends: <input type = "hidden" name = "PAST_eventid" value = "'.mysql_result($result, $i,'id').'"/>
+              */
 			echo '<td><form action = "eventinfo.php" method = "POST"><input type = "hidden" name = "eventid" value = "'.mysql_result($result, $i,'id').'"/> 
 					<button class = "btn" type = "submit">View Details</button></form>';
 			echo "</tr>";
@@ -308,6 +346,14 @@ END;
 				echo '<td>'.mysql_result($result, $i,'max').'</td>';
 			}
 			echo '<td>'.mysql_result($result, $i,'supervisor').'</td>';
+
+
+            /*
+             * Output a button in the very last <td> that takes the user to eventinfo.php as an PAST event
+             * The difference is the name of the hidden field submitted as a post value
+             * An active event sends:<input type = "hidden" name = "eventid" value = "'.mysql_result($result, $i,'id').'"/>
+             * A closed one sends: <input type = "hidden" name = "PAST_eventid" value = "'.mysql_result($result, $i,'id').'"/>
+             */
 			echo '<td><form action = "eventinfo.php" method = "POST"><input type = "hidden" name = "PAST_eventid" value = "'.mysql_result($result, $i,'id').'"/> 
 					<button class = "btn" type = "submit">View Details</button></form>';
 			echo "</tr>";

@@ -1,6 +1,6 @@
 <?php
 /*
-	opens a tab, creates and downloads an excel sheet
+	This generates an excel document and downloads it for the user
 
 */
 
@@ -11,14 +11,16 @@ $password = 'kinkaidcs2014';
 
 if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && isset($_POST['downloadexcel'])) {
 	if ($_SERVER['PHP_AUTH_USER'] == $username && $_SERVER['PHP_AUTH_PW'] == $password){
-		include 'functions.php';
-		include 'library/phpexcel/PHPExcel.php';
+		include 'functions.php'; //include mysql functions DO NOT include header.php, will have errors
+		include 'library/phpexcel/PHPExcel.php'; //include third-party excel libraries
 		include 'library/phpexcel/PHPExcel/Writer/Excel2007.php';
 		
-		$phpExcel = new PHPExcel();
+		$phpExcel = new PHPExcel(); //creates excel object
 		$sheet=$phpExcel->getActiveSheet();
 		
-		
+		/*
+		 * Establish basic excel information like title, subject , etc.
+		 */
 		$phpExcel->getProperties()->setCreator("Kinkaid Community Service Council");
 		$phpExcel->getProperties()->setLastModifiedBy("Kinkaid Community Service Council");
 		$phpExcel->getProperties()->setTitle("Current Event Data");
@@ -26,9 +28,9 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && isset(
 		$phpExcel->getProperties()->setDescription("Kinkaid Community Service Event data.");
 		
 		
-		$row = 2;
-		$col = 1;
-		$query = "SELECT * FROM events WHERE closed=true ORDER by eventdate ASC"; //consider only selecting closed events
+		$row = 2; //Third row because save top one for a title
+		$col = 1; //Second Column, because the first is for student names
+		$query = "SELECT * FROM events WHERE closed=true ORDER by eventdate ASC"; //selects only closed events
 		$eventsresult = mysql_query($query); //stores the results from selecting all the events in the events tables, past and present
 		for ($i = 0;$i<mysql_num_rows($eventsresult);$i++){
 			$sheet->setCellValueByColumnAndRow($col,$row,mysql_result($eventsresult, $i,'eventname'));
