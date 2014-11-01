@@ -8,7 +8,7 @@
  */
 
 $username  = 'admin';
-$password = 'kinkaidcs2014';
+$password = 'kinkaidcs';
 
 
 
@@ -51,7 +51,12 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){
 		
 			</head>
 END;
-		
+
+        //get the current year and the year after to put in the <option> for year
+        $currentyear = date("Y");
+        $nextyear = $currentyear + 1;
+
+
 		echo <<<END
 		<body>
 		<div class="container">
@@ -130,15 +135,9 @@ END;
 							<option>31</option>
 				    	</select>
 						<select  class="selectpicker" data-width="100px" data-size='3' name= 'date_year'>
-					        <option>2013</option>
-					        <option>2014</option>
-							<option>2015</option>
-					        <option>2016</option>
-							<option>2017</option>
-					        <option>2018</option>
-							<option>2019</option>
-					        <option>2020</option>
-							<option>2021</option>
+					        <option>$currentyear</option>
+					        <option>$nextyear</option>
+
 	
 				    	</select>
 					</div>

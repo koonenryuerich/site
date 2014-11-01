@@ -7,6 +7,8 @@
 	
 	mysql_connect($server,$username,$password) or die(mysql_error());
 	mysql_select_db($db) or die(mysql_error());
+    mysql_set_charset("utf8");
+
 	
 	function createTable($name, $query){
 	    queryMySql("CREATE TABLE IF NOT EXISTS $name($query)");
@@ -21,7 +23,7 @@
 	
 	function sanitizeString($var){
 	    $var = strip_tags($var);
-	    $var = htmlentities($var);
+	    //$var = htmlentities($var);
 	    $var = stripslashes($var);
 	    return mysql_real_escape_string($var);
 	}

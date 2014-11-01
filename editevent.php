@@ -1,6 +1,6 @@
 <?php
 $username  = 'admin';
-$password = 'kinkaidcs2014';
+$password = 'kinkaidcs';
 
 
 
@@ -35,6 +35,8 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){
 					{
 						$('input[type="text"]').keyup(function()
 						{
+							//check if required fields have been filled in
+							//if not filled in, disable the submit button
 							if ($("#eventname").val()!='' && $("#date").val()!='' && $("#time").val()!='' && $('#location').val()!='' && $("#credits").val()!='')
 							{
 								$('button[type="submit"]').removeAttr('disabled');
@@ -82,9 +84,13 @@ END;
 					<div class = "control-group">
 						<label class = "control-label" for ="input01">*Date:</label>
 						<div class = "controls">
-							<select  class="selectpicker" data-width="120px" name='date_month' >
-						
+
 END;
+                        /*
+                         * Set up the <select> for the date option (month, day, year)
+                         *
+                         */
+                        echo "<select  class='selectpicker' data-width='120px' name='date_month' >";
 						$default = $eventdate[1];
 						$months = array('1'=>'January',
 								'2'=>'February',
@@ -98,6 +104,7 @@ END;
 								'10'=>'October',
 								'11'=>'November',
 								'12'=>'December');
+                        //load all the month options
 						foreach ($months as $key=>$val){
 							echo ($key == (int)$default) ? "<option selected=\"selected\" value=\"$key\">$val</option>":"<option value=\"$key\">$val</option>";
 							
@@ -105,14 +112,17 @@ END;
 						echo "</select>";
 						echo "<select  class='selectpicker' data-width='80px' data-size='10' name='date_day'>";
 						$default = $eventdate[2];
-						echo (int)$default;
+
+                        //lod all the day options
 						for ($i = 0;$i<32;$i++){
 							echo ($i == (int)$default) ? "<option selected=\"selected\">$i</option>" : "<option>$i</option>";
 						}
 					    echo"</select>";
 						echo "<select  class='selectpicker' data-width='100px' data-size='3' name= 'date_year'>";
 						$default = $eventdate[0];
-						for ($i = date('Y');$i<date('Y', strtotime('+10 year'));$i++){
+
+                        //load all the year options
+						for ($i = date('Y');$i<date('Y', strtotime('+5 year'));$i++){
 							echo ($i == (int)$default) ? "<option selected=\"selected\">$i</option>" : "<option>$i</option>";
 						}
 						echo "</select>";   

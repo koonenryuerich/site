@@ -6,11 +6,13 @@
 
 */
 session_start(); //start a session to store variables for the user
-include 'functions.php'; //include all the functions needed to query database, clean input, etc. 
-//set up basic css and javascript
-echo <<<END
-	<!DOCTYPE html>\n<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'>
-	 <meta charset='utf-8'>
+include 'functions.php'; //include important functions, all other pages will usually include header.php and thus functions.php
+
+?>
+
+
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta name='description' content=''>
     <meta name='author' content=''>
@@ -109,15 +111,24 @@ echo <<<END
         border-right: 0;
         border-radius: 0 3px 3px 0;
       }
-		
-	.centereddiv {
-		 margin:0 auto;
-		 float:none;
-	}
-		
-		
-		
+
+
+      <!-- CUSTOM CSS-->
+      .centereddiv {
+          margin:0 auto;
+          width:50%;
+      }
+
+      .addressfield{
+        width:60%;
+      }
+
+
+
+
     </style>
+
+
     <link href='justifiedpage_files/bootstrap-responsive.css' rel='stylesheet'>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -133,9 +144,27 @@ echo <<<END
                                    <link rel='shortcut icon' href='http://twitter.github.io/bootstrap/assets/ico/favicon.png'>
 
 
+    </head>
 
-END;
+    <body>
+    <div class = "container">
+    <div class= "row">
+        <div class = "span12">
+            <a href="http://www.kinkaid.org/page.cfm?p=1" target="_self"><img src="./images/logo-big.png" title="The Kinkaid School" height="120" width="510"></a>
 
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+<?php
 
 
 if (isset($_SESSION['userid'])){ //check if the user is logged in already using the session variable 

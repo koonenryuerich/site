@@ -1,398 +1,358 @@
 <?php
-// no real need for scripts, because this a static page.
+
+/*
+	index.php is the main page for students/clients.
+    If not logged in, it will redirect you to a login.php
+    If logged in, it will output a table of events for students to choose from. This table is populated by data from the MySQL database
 
 
-?>
-<!DOCTYPE html>
-<html lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>Kinkaid Community and Service</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <!-- Le styles -->
-    <link href="justifiedpage_files/bootstrap.css" rel="stylesheet">
-    <link href="justifiedpage_files/bootstrap-responsive.css" rel="stylesheet">
-    <style>
-
-    /* GLOBAL STYLES
-    -------------------------------------------------- */
-    /* Padding below the footer and lighter body text */
-
-    body {
-      padding-bottom: 40px;
-      color: #5a5a5a;
-    }
-
-
-
-    /* CUSTOMIZE THE NAVBAR
-    -------------------------------------------------- */
-
-    /* Special class on .container surrounding .navbar, used for positioning it into place. */
-    .navbar-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 10;
-      margin-top: 20px;
-      margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
-    }
-    .navbar-wrapper .navbar {
-
-    }
-
-    /* Remove border and change up box shadow for more contrast */
-    .navbar .navbar-inner {
-      border: 0;
-      -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.25);
-         -moz-box-shadow: 0 2px 10px rgba(0,0,0,.25);
-              box-shadow: 0 2px 10px rgba(0,0,0,.25);
-    }
-
-    /* Downsize the brand/project name a bit */
-    .navbar .brand {
-      padding: 14px 20px 16px; /* Increase vertical padding to match navbar links */
-      font-size: 16px;
-      font-weight: bold;
-      text-shadow: 0 -1px 0 rgba(0,0,0,.5);
-    }
-
-    /* Navbar links: increase padding for taller navbar */
-    .navbar .nav > li > a {
-      padding: 15px 20px;
-    }
-
-    /* Offset the responsive button for proper vertical alignment */
-    .navbar .btn-navbar {
-      margin-top: 10px;
-    }
-
-
-
-    /* CUSTOMIZE THE CAROUSEL
-    -------------------------------------------------- */
-
-    /* Carousel base class */
-    .carousel {
-      margin-bottom: 10px;
-    }
-
-    .carousel .container {
-      position: relative;
-      z-index: 9;
-    }
-
-    .carousel-control {
-      height: 80px;
-      margin-top: 0;
-      font-size: 120px;
-      text-shadow: 0 1px 1px rgba(0,0,0,.4);
-      background-color: transparent;
-      border: 0;
-      z-index: 10;
-    }
-
-    .carousel .item {
-      height: 600px;
-    }
-    .carousel img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      height: 600px;
-    }
-
-    .carousel-caption {
-      background-color: transparent;
-      position: static;
-      max-width: 550px;
-      padding: 0 20px;
-      margin-top: 200px;
-    }
-    .carousel-caption h1,
-    .carousel-caption .lead {
-      margin: 0;
-      line-height: 1.25;
-      color: #fff;
-      text-shadow: 0 1px 1px rgba(0,0,0,.4);
-    }
-    .carousel-caption .btn {
-      margin-top: 10px;
-    }
-
-
-
-    /* MARKETING CONTENT
-    -------------------------------------------------- */
-
-    /* Center align the text within the three columns below the carousel */
-    .marketing .span4 {
-      text-align: center;
-    }
-    .marketing h2 {
-      font-weight: normal;
-    }
-    .marketing .span4 p {
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-
-
-    /* Featurettes
-    ------------------------- */
-
-    .featurette-divider {
-      margin: 80px 0; /* Space out the Bootstrap <hr> more */
-    }
-    .featurette {
-      padding-top: 120px; /* Vertically center images part 1: add padding above and below text. */
-      overflow: hidden; /* Vertically center images part 2: clear their floats. */
-    }
-    .featurette-image {
-      margin-top: -120px; /* Vertically center images part 3: negative margin up the image the same amount of the padding to center it. */
-    }
-
-    /* Give some space on the sides of the floated elements so text doesn't run right into it. */
-    .featurette-image.pull-left {
-      margin-right: 40px;
-    }
-    .featurette-image.pull-right {
-      margin-left: 40px;
-    }
-
-    /* Thin out the marketing headings */
-    .featurette-heading {
-      font-size: 50px;
-      font-weight: 300;
-      line-height: 1;
-      letter-spacing: -1px;
-    }
-
-
-
-    /* RESPONSIVE CSS
-    -------------------------------------------------- */
-
-    @media (max-width: 979px) {
-
-      .container.navbar-wrapper {
-        margin-bottom: 0;
-        width: auto;
-      }
-      .navbar-inner {
-        border-radius: 0;
-        margin: -20px 0;
-      }
-
-      .carousel .item {
-        height: 500px;
-      }
-      .carousel img {
-        width: auto;
-        height: 500px;
-      }
-
-      .featurette {
-        height: auto;
-        padding: 0;
-      }
-      .featurette-image.pull-left,
-      .featurette-image.pull-right {
-        display: block;
-        float: none;
-        max-width: 40%;
-        margin: 0 auto 20px;
-      }
-    }
-
-
-    @media (max-width: 767px) {
-
-      .navbar-inner {
-        margin: -20px;
-      }
-
-      .carousel {
-        margin-left: -20px;
-        margin-right: -20px;
-      }
-      .carousel .container {
-
-      }
-      .carousel .item {
-        height: 300px;
-      }
-      .carousel img {
-        height: 300px;
-      }
-      .carousel-caption {
-        width: 65%;
-        padding: 0 70px;
-        margin-top: 100px;
-      }
-      .carousel-caption h1 {
-        font-size: 30px;
-      }
-      .carousel-caption .lead,
-      .carousel-caption .btn {
-        font-size: 18px;
-      }
-
-      .marketing .span4 + .span4 {
-        margin-top: 40px;
-      }
-
-      .featurette-heading {
-        font-size: 30px;
-      }
-      .featurette .lead {
-        font-size: 18px;
-        line-height: 1.5;
-      }
-
-    }
-    </style>
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.io/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.io/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.io/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="http://twitter.github.io/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="http://twitter.github.io/bootstrap/assets/ico/favicon.png">
-  <style type="text/css" id="holderjs-style">.holderjs-fluid {font-size:16px;font-weight:bold;text-align:center;font-family:sans-serif;margin:0}</style></head>
-
-  <body>
-
-
-
-    <!-- NAVBAR
-    ================================================== -->
-    <div class="navbar-wrapper">
-      <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
-      <div class="container">
-
-        <div class="navbar navbar-inverse">
-          <div class="navbar-inner">
-            <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="brand" href="#">Kinkaid Community & Service</a>
-            <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-            <div class="nav-collapse collapse">
-              <ul class="nav">
-                <li class="active"><a href="index.php">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <!-- Read about Bootstrap dropdowns at http://twitter.github.com/bootstrap/javascript.html#dropdowns -->
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="construction.html">Bocce Ball</a></li>
-                    <li><a href="construction.html">Habitat For Humanity</a></li>
-                    <li><a href="construction.html">Meals For Wheels</a></li>
-                  </ul>
-                </li>
-                <li><a href="signup.php">Sign Up</a></li>
-                
-              </ul>
-            </div><!--/.nav-collapse -->
-          </div><!-- /.navbar-inner -->
-        </div><!-- /.navbar -->
-
-      </div> <!-- /.container -->
-    </div><!-- /.navbar-wrapper -->
-
-
-
-    <!-- Carousel
-    ================================================== -->
-    <div id="myCarousel" class="carousel slide">
-      <div class="carousel-inner">
-        <div class="item">
-          <img src="images/kinkaid1.jpg" alt="">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Lend a hand</h1>
-              <p class="lead">Make a difference in your community!</p>
-              <a class="btn btn-large btn-primary" href="signup.php">Sign up today</a>
-            </div>
-          </div>
-        </div>
-        <div class="item active">
-          <img src="images/kinkaid2.jpg" alt="">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Kinkaid Community Service Council</h1>
-              <p class="lead">Interested in contributing more to our community? Learn more about us!</p>
-              <a class="btn btn-large btn-primary" href="about.html">Learn more</a>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <img src="images/kinkaid3.jpg" alt="">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Welcome</h1>
-              <p class="lead">Thanks for visiting the Kinkaid Community and Service Website! You can sign up for all events here.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-    </div><!-- /.carousel -->
+*/
 
 
 
     
-
-
-   <div style = "margin-left: 20px" class="footer">
-   		<hr>
-        <p>© Kinkaid <br>   Part of the council? <a href="dashboard.php">Sign in here.</a></p>
-   </div>
-
-    </div><!-- /.container -->
+include 'header.php';
 
 
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="justifiedpage_files/jquery.js"></script>
-    <script src="justifiedpage_files/bootstrap-transition.js"></script>
-    <script src="justifiedpage_files/bootstrap-alert.js"></script>
-    <script src="justifiedpage_files/bootstrap-modal.js"></script>
-    <script src="justifiedpage_files/bootstrap-dropdown.js"></script>
-    <script src="justifiedpage_files/bootstrap-scrollspy.js"></script>
-    <script src="justifiedpage_files/bootstrap-tab.js"></script>
-    <script src="justifiedpage_files/bootstrap-tooltip.js"></script>
-    <script src="justifiedpage_files/bootstrap-popover.js"></script>
-    <script src="justifiedpage_files/bootstrap-button.js"></script>
-    <script src="justifiedpage_files/bootstrap-collapse.js"></script>
-    <script src="justifiedpage_files/bootstrap-carousel.js"></script>
-    <script src="justifiedpage_files/bootstrap-typeahead.js"></script>
-    <script>
-      !function ($) {
-        $(function(){
-          // carousel demo
-          $('#myCarousel').carousel()
-        })
-      }(window.jQuery)
-    </script>
-    <script src="justifiedpage_files/holder.js"></script>
-  
 
-</body></html>
+
+?>
+
+
+
+    <style>
+    #loading-indicator {
+          position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -32px; /* -1 * image width / 2 */
+            margin-top: -32px;  /* -1 * image height / 2 */
+            display: block;
+    }
+
+    p { /*this is so the description text that appears in the signup dialog does not keep on going horizontally forever*/
+        word-wrap: break-word;
+    }
+
+    .warningtext{
+        color: #ff0000;
+    }
+
+    </style>
+    <script src="plugins/blockui.js"></script>
+	<script>
+
+        /*
+        * Setup the javascript needed to run the page, including ajax calls etc.
+        *
+        */
+
+		$(document).ready(function(){ //Runs these scripts when document is loaded 
+
+			$('td button.signup').click(function(){ //sets a click handler for the signup button next to events
+			    var button = this;
+
+
+
+                var id = <?php echo "$userid"?>; //userid is a session variable initialized in headers.php
+
+
+                var eventname = $(this).parent().siblings(":first").text(); //selects the parent, the row, and then gets the text from the first <td>
+                var eventid = $(this).parent().find('input[type=hidden]').val(); //selects the parent (<td>) and gets the value of the hidden input text inside it.
+                //var data = 'id='+id+'&eventid='+eventid; //initializes the data variable that will be sent as parameters to ajax
+                var eventinfo = $(this).parent().siblings(":first").find('input[type=hidden]').val(); //selects the hidden input in the first <td> in the <tablee>
+                var data = 'eventid='+eventid;
+
+
+                var status = $(this).val();
+                if (status == 'waitlist'){
+                    bootbox.confirm("You are signing up to be waitlisted for this event! There is no guarantee that you will be able to atttend. Continue sign up?",function(result){
+                        if (result){
+                             $.ajax( //sends ajax request
+                            {
+                                type: "POST",
+                                url:"ajax/getvolunteers.php",
+                                data:data,
+                                cache: false,
+                                success: function(data)
+                                {
+                                    volunteers = JSON.parse(data);
+                                    joinString = volunteers.join("<br>");
+                                    volunteerString = "<p>"+joinString+"</p>";
+
+
+
+                                    bootbox.confirm("\
+                                    <h3>Signing up for event: "+eventname+"</h3>"+
+                                    "<p class = 'warningtext'><b>Note: You will not be able to cancel your signup after you hit 'OK'! Please contact a student leader for your project or Ms. Roff at debbie.roff@kinkaid.org to cancel signups 24 HOURS IN ADVANCE. Remember, if you sign up for an event, you are making a commitment and we will expect you to fulfill it! </b></p><hr>"+
+                                    "<h6>Event Information:</h6><p>"+eventinfo+"</p><hr>\
+                                    <h6>Current Volunteers:</h6>"+
+                                    volunteerString+
+                                    "<hr><p>Please write anything you would like us to know about here. This field is NOT required.</p><br><textarea id = 'extrainfo' \
+                                    style='width:80%' rows = 5 wrap ='type' placeholder='E.G. I might be late'></textarea>",function(result){
+                                        if (result){
+                                            var notes = $('#extrainfo').val();
+                                            if (notes == ''){ //if user did not enter anything
+                                                var data = 'id='+id+'&eventid='+eventid;
+                                            }
+                                            else{ //if the user did enter something add it to the data sent to the ajax request
+                                                var data = 'id='+id+'&eventid='+eventid+'&notes='+notes;
+                                            }
+                                            $.ajax( //sends ajax request
+                                                {
+                                                    type: "POST",
+                                                    url:"ajax/signupajax.php",
+                                                    data:data,
+                                                    cache: false,
+                                                    success: function(data)
+                                                    {
+                                                        // info = JSON.parse(data);
+                                                        // var waitlistNum = info.waitlist;
+                                                        // console.log(waitlistNum);
+                                                        button.disabled = true; //disables button so that user cannot sign up again
+                                                        var firstName = '<?php echo $ufirstname?>';
+                                                        bootbox.alert("Thanks for signing up, "+firstName+"! Your number on the waitlist is: "+data+"! If you are promoted from the waitlist you will receive an email before the event!"); //alerts user that he/she has signed up succesfully
+
+                                                    }
+                                            });
+                                        }
+                                    });
+
+
+
+
+
+                                }
+                            });
+                        }
+                        else{
+                            //donothing
+                        }
+                    
+                    });
+                }
+                else{
+                     $.ajax( //sends ajax request
+                    {
+                        type: "POST",
+                        url:"ajax/getvolunteers.php",
+                        data:data,
+                        cache: false,
+                        success: function(data)
+                        {
+                            volunteers = JSON.parse(data);
+                            joinString = volunteers.join("<br>");
+                            volunteerString = "<p>"+joinString+"</p>";
+
+
+
+                            bootbox.confirm("\
+                            <h3>Signing up for event: "+eventname+"</h3>"+
+                            "<p class = 'warningtext'><b>Note: You will not be able to cancel your signup after you hit 'OK'! Please contact a student leader for your project or Ms. Roff at debbie.roff@kinkaid.org to cancel signups 24 HOURS IN ADVANCE. Remember, if you sign up for an event, you are making a commitment and we will expect you to fulfill it! </b></p><hr>"+
+                            "<h6>Event Information:</h6><p>"+eventinfo+"</p><hr>\
+                            <h6>Current Volunteers:</h6>"+
+                            volunteerString+
+                            "<hr><p>Please write anything you would like us to know about here. This field is NOT required.</p><br><textarea id = 'extrainfo' \
+                            style='width:80%' rows = 5 wrap ='type' placeholder='E.G. I might be late'></textarea>",function(result){
+                                if (result){
+                                    var notes = $('#extrainfo').val();
+                                    if (notes == ''){ //if user did not enter anything
+                                        var data = 'id='+id+'&eventid='+eventid;
+                                    }
+                                    else{ //if the user did enter something add it to the data sent to the ajax request
+                                        var data = 'id='+id+'&eventid='+eventid+'&notes='+notes;
+                                    }
+                                    $.ajax( //sends ajax request
+                                        {
+                                            type: "POST",
+                                            url:"ajax/signupajax.php",
+                                            data:data,
+                                            cache: false,
+                                            success: function()
+                                            {
+                                                button.disabled = true; //disables button so that user cannot sign up again
+                                                var firstName = '<?php echo $ufirstname?>';
+                                                bootbox.alert("Thanks for signing up, "+firstName+"!"); //alerts user that he/she has signed up succesfully
+
+                                            }
+                                    });
+                                }
+                            });
+
+
+
+
+
+                        }
+                    });
+                }
+
+               
+
+
+
+
+
+				$(".tooltip").tooltip();
+
+			});
+			
+			/*These two scripts make sure that when an ajax request is runing, the user cannot interact with the 
+			*webpage and displays a loading screen
+			*/
+            $(document).ajaxSend(function(event, request, settings) {
+
+                $.blockUI({ message: '<h1>Loading...<img src="images/ajax-loader.gif" /> </h1>' });
+            });
+            $(document).ajaxComplete(function(event, request, settings) {
+                $.unblockUI();
+            });
+
+
+
+
+		});
+
+
+	</script>
+
+
+<?php
+
+/*
+ * Check if the user is logged in, then output main html
+ */
+
+
+
+
+
+
+if ($loggedin == false || $loggedin == null){ //if user is not logged in, redirect user to login.php, and store the current url so that he can be redirected back from login.php
+	$_SESSION['redirecturl'] = "index.php"; //Session variables are essentially globals
+	echo "<script>window.location.replace('login.php');</script>";//javascript redirect
+}
+
+
+?>
+
+		    <div class="container">
+
+
+
+
+		      <div class="masthead">
+                <?php echo "<p style='float:right;' >Welcome, $ufirstname $ulastname</p>";?>
+
+		        <h3 class="muted">Sign Up</h3>
+		        <div class="navbar">
+		          <div class="navbar-inner">
+		            <div class="container">
+		              <ul class="nav">
+		                
+		                
+		                <li  ><a href = 'index.php'>Sign Up</a></li>
+		              </ul>
+		            </div>
+		          </div>
+		        </div><!-- /.navbar -->
+		      </div>
+
+
+
+            <div class = 'container'><h3>Sign Up Forms</h3><table class = 'table'>
+            <tr>
+                  <th>Event Name</th>
+                  <th>Location</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Current/Max Volunteers</th>
+                  <!--<th>Current # of Volunteers</th>-->
+                  <th>Supervisor</th>
+                  <th>Sign Up</th>
+            </tr>
+
+
+<?php
+
+//Create an array of months in order to output date better
+$months = array('1'=>'January',
+		'2'=>'February',
+		'3'=>'March,',
+		'4'=>'April',
+		'5'=>'May',
+		'6'=>'June',
+		'7'=>'July',
+		'8'=>'August',
+		'9'=>'September',
+		'10'=>'October',
+		'11'=>'November',
+		'12'=>'December');
+
+
+//Query database for every event and output it in an <html> table
+
+$query = "SELECT * FROM events where closed=0 and eventdate > NOW() ORDER BY eventdate"; //Selects all open events and orders them by most recent in the future to furthest
+$result = queryMySql($query); //stores query in a result object
+$numrows = mysql_num_rows($result);
+$eventid = null;
+for ($i = 0;$i<$numrows;++$i){ //for loop, runs through each row of data obtained in the query
+	$eventid = mysql_result($result, $i,'id'); //gets the eventid
+	
+	
+
+
+    echo"<tr>"; //Table row
+
+    $eventDescription = mysql_result($result,$i,'description');//gets the event description from the sql query
+	echo "<td>".mysql_result($result, $i,'eventname')."<input type='hidden' name='eventinfo' value = '$eventDescription'></td>"; //puts the event description as a hidden input in the first <td>
+
+
+	$eventLocation = mysql_result($result,$i,'location');//gets event location
+	echo '<td>'.$eventLocation.'</td>';
+	
+	$eventdate = explode('-', mysql_result($result, $i,'eventdate')); //explode/split the string that mysql stores the date in E.G 2013-12-28
+	
+	echo '<td>'.$months[(int)$eventdate[1]].' '.(int)$eventdate[2].', '.$eventdate[0].'</td>'; //outputs date using the months array: month, day, year
+	
+	echo '<td>'.mysql_result($result, $i,'eventtime').'</td>'; //displays the eventtime
+    $max = mysql_result($result, $i,'max'); //displays max volunteers
+    if ($max == 0) //if admin did not set max volunteers, then just displaay nothing
+	    echo '<td></td>';
+    else{
+        //show fraction of currently signed up volunteers to max volunteers
+        $currentVolunteerQuery = "SELECT * from signups where eventid=$eventid and waitlist=0 and noshow=0 and withdrew=0 and halfcredit=0";
+        $currentVolunteers = mysql_num_rows(queryMySql($currentVolunteerQuery));
+        echo '<td>'.$currentVolunteers."/".$max.'</td>';
+    }
+        
+	echo '<td>'.mysql_result($result, $i,'supervisor').'</td>'; //output supervisor
+	
+	$query = "SELECT * FROM signups WHERE eventid=$eventid AND studentid=$userid";
+	if (mysql_num_rows(mysql_query($query)) > 0){ //if student has signed up for event already, make the button disabled
+		echo '<td><button disabled="disabled" class = "btn" type = "submit">Volunteer!</button></form>';
+	}
+	else{ //otherwise, output a hidden input with the event's id and a button(its handler is in the script section)
+        //check if currrent volunteers are equal to the maximum number of allowed voluntters. if it is, do not show it on the list of events
+        $currentvolunteers = mysql_num_rows(queryMySql("SELECT * FROM signups where eventid=$eventid"));
+        if ($currentvolunteers >= mysql_result($result, $i,'max') && mysql_result($result, $i,'max')!=0){
+            echo '<td><input type = "hidden" name = "eventid" value = "'.mysql_result($result, $i,'id').'"/>
+        <button class = "btn btn-warning signup" type = "submit" value="waitlist">Waitlist Me!</button></td>';
+        }
+        else{
+            echo '<td><input type = "hidden" name = "eventid" value = "'.mysql_result($result, $i,'id').'"/>
+        <button class = "btn btn-primary signup" type = "submit" value="signup">Volunteer!</button></td>';
+        }
+		
+	}
+	
+	echo "</tr>"; //end one row, one event
+	
+}   
+echo "</table></div>"; //end table
+
+
+include "footer.php";//include a footer
+
+?>

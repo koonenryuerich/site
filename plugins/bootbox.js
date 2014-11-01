@@ -29,9 +29,8 @@ window.bootbox = window.bootbox || (function init($, undefined) {
             "<form class='bootbox-form'></form>",
         inputs: {
             text:
-                "<input class='bootbox-input bootbox-input-text form-control' autocomplete=off type=text />",
-            signup:
-                "<p>Please write anything you would like us to know about here. This field is NOT required. Otherwise, just click the 'OK' button!</p><br><textarea name = 'notes' style='width:90%' rows = 5 wrap ='type' value='default'>Default</textarea>"
+                "<input class='bootbox-input bootbox-input-text form-control' autocomplete=off type=text />"
+
         }
     };
 
@@ -356,108 +355,7 @@ window.bootbox = window.bootbox || (function init($, undefined) {
     };
 
 
-    //Self-made function
-    exports.signup = function() {
-        var options;
-        var defaults;
-        var dialog;
-        var form;
-        var input;
-        var shouldShow;
 
-        // we have to create our form first otherwise
-        // its value is undefined when gearing up our options
-        // @TODO this could be solved by allowing message to
-        // be a function instead...
-        form = $(templates.form);
-
-        defaults = {
-            buttons: createLabels("cancel", "confirm"),
-            value: ""
-        };
-
-
-
-        //Information processing for the event
-        var sepArgument = arguments[0].split('|');
-        var eventInfo = sepArgument[1];
-        var trimmedString = arguments[0].substring(0, arguments[0].indexOf('|'));
-        arguments[0] = trimmedString;
-
-        options = validateButtons(
-            mergeArguments(defaults, arguments, ["title", "callback"]),
-            ["cancel", "confirm"]
-        );
-
-        // capture the user's show value; we always set this to false before
-        // spawning the dialog to give us a chance to attach some handlers to
-        // it, but we need to make sure we respect a preference not to show it
-        shouldShow = (options.show === undefined) ? true : options.show;
-
-        /**
-         * overrides; undo anything the user tried to set they shouldn't have
-         */
-        options.message = form;
-
-        options.buttons.cancel.callback = options.onEscape = function() {
-            return options.callback(null);
-        };
-
-        options.buttons.confirm.callback = function() {
-            //return options.callback(input.find('textarea').text());
-            var returnval = input[1].value;
-            if (returnval == ''){
-                return options.callback("default");
-            }else{
-                return options.callback(returnval);
-            }
-            //return options.callback(input[1].value);
-
-        };
-
-        options.show = false;
-
-        // prompt specific validation
-        if (!options.title) {
-            throw new Error("prompt requires a title");
-        }
-
-        if (!$.isFunction(options.callback)) {
-            throw new Error("prompt requires a callback");
-        }
-
-        // create the input
-        input = $(templates.inputs.signup);
-        input.val(options.value);
-
-        // now place it in our form
-        var infoString = "<strong>Event Information:</strong><p>"+eventInfo+"</p><hr>";
-        form.append(infoString);
-        form.append(input);
-
-        form.on("submit", function(e) {
-            e.preventDefault();
-            // @TODO can we actually click *the* button object instead?
-            // e.g. buttons.confirm.click() or similar
-            dialog.find(".btn-primary").click();
-        });
-
-        dialog = exports.dialog(options);
-
-        // clear the existing handler focusing the submit button...
-        dialog.off("shown.bs.modal");
-
-        // ...and replace it with one focusing our input, if possible
-        dialog.on("shown.bs.modal", function() {
-            input.focus();
-        });
-
-        if (shouldShow === true) {
-            dialog.modal("show");
-        }
-
-        return dialog;
-    };
 
 
     exports.dialog = function(options) {
