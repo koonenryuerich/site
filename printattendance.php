@@ -51,7 +51,7 @@ END;
 			$query = "SELECT signups.id,signups.studentid,signups.extra, volunteers.firstname, volunteers.lastname, volunteers.grade, volunteers.advisor
 FROM signups
 INNER JOIN volunteers ON signups.studentid = volunteers.id
-WHERE eventid =$eventid
+WHERE eventid =$eventid and waitlist=0 AND withdrew=0 and noshow=0
 ORDER BY volunteers.lastname ASC ";
 
 

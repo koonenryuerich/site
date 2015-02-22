@@ -1,6 +1,6 @@
 <?php
 $username  = 'admin';
-$password = 'kinkaidcs';
+$password = 'admin';
 
 
 

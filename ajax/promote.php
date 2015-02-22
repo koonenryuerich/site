@@ -44,7 +44,7 @@ if (isset($_POST['id']) && isset($_POST['eventid'])){
 	
 	$subject = "Event Confirmation Email";//add subject
 	$message = "You have been promoted off the waitlist for Event: $eventname! You will begin to receive information from the project leader."; // add message
-	$recipient =  "$ufirstname"."."."$ulastname"."@kinkaid.org";
+	$recipient =  $uemail;
 	$mail->AddAddress($recipient);
 	
 	$mail->From = 'kinkaidcommunityservice@gmail.com';

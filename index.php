@@ -243,7 +243,13 @@ if ($loggedin == false || $loggedin == null){ //if user is not logged in, redire
 
 
 		      <div class="masthead">
-                <?php echo "<p style='float:right;' >Welcome, $ufirstname $ulastname</p>";?>
+                <?php echo "<p style='float:right;' >Welcome, $ufirstname $ulastname
+                <br>
+<a href = 'studentinfo.php'>My Community Service History</a>
+                </p>
+                <br>
+
+                ";?>
 
 		        <h3 class="muted">Sign Up</h3>
 		        <div class="navbar">
@@ -293,7 +299,7 @@ $months = array('1'=>'January',
 
 //Query database for every event and output it in an <html> table
 
-$query = "SELECT * FROM events where closed=0 and eventdate > NOW() ORDER BY eventdate"; //Selects all open events and orders them by most recent in the future to furthest
+$query = "SELECT * FROM events where closed=0 and eventdate between NOW() and NOW() + INTERVAL 2 MONTH  ORDER BY eventdate;"; //Selects all open events and orders them by most recent in the future to furthest
 $result = queryMySql($query); //stores query in a result object
 $numrows = mysql_num_rows($result);
 $eventid = null;
@@ -306,7 +312,7 @@ for ($i = 0;$i<$numrows;++$i){ //for loop, runs through each row of data obtaine
     echo"<tr>"; //Table row
 
     $eventDescription = mysql_result($result,$i,'description');//gets the event description from the sql query
-	echo "<td>".mysql_result($result, $i,'eventname')."<input type='hidden' name='eventinfo' value = '$eventDescription'></td>"; //puts the event description as a hidden input in the first <td>
+	echo "<td>".mysql_result($result, $i,'eventname')."<input type='hidden' name='eventinfo' value = \"$eventDescription\"></td>"; //puts the event description as a hidden input in the first <td>
 
 
 	$eventLocation = mysql_result($result,$i,'location');//gets event location

@@ -6,7 +6,7 @@
 	these actions 
 */
 $username  = 'admin';
-$password = 'kinkaidcs';
+$password = 'admin';
 $query = "";
 $result = "";
 
@@ -66,8 +66,8 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){ //promp
 			}
 			else{
 				$eventid = $_POST['eventid'];
-                $eventname = $_POST['eventname'];
-				$location = $_POST['location'];
+                $eventname = sanitizeString($_POST['eventname']);
+				$location = sanitizeString($_POST['location']);
 				$eventdate = $_POST['date_year'].'-'.$_POST['date_month'].'-'.$_POST['date_day'];
 				$eventtime = $_POST['time'];
 				if (intval($_POST['max']) == null)
@@ -75,7 +75,7 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){ //promp
 				else 
 					$max = intval($_POST['max']);
 				$supervisor = $_POST['supervisor'];
-				$description = $_POST['description'];
+				$description = sanitizeString($_POST['description']);
 				$credits = $_POST['credits'];
 
 
@@ -98,38 +98,45 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){ //promp
 
 		if (isset($_POST['closeevent'])){
 			$eventid = $_POST['eventid'];
-			
-			$query = "SELECT * FROM events WHERE id = $eventid";
-			$result = queryMySql($query);
-			$eventname = mysql_result($result, 0,'eventname');
-			$credits = mysql_result($result, 0,'defaultcredits');
-			$halfcredits = $credits/2;
-			
-			//students with full credit
-			$query = "SELECT * FROM signups where eventid=$eventid and noshow=false and waitlist=0 and withdrew=0 and halfcredit=0";
-			$result = queryMySql($query);
-			$numrows = mysql_num_rows($result);
-			for ($i = 0;$i<$numrows;$i++){
-				$studentid = mysql_result($result, $i,'studentid');
-				$query = "UPDATE volunteers SET credits = credits + $credits where id=$studentid"; //adds credits to students
-				$studenresult = queryMySql($query);
-			}
+            $enteredpassword = sanitizeString($_POST['closeeventpassword']);
 
-			//students with half credit
-			$query = "SELECT * FROM signups where eventid=$eventid and noshow=false and waitlist=0 and withdrew=0 and halfcredit=1";
-			$result = queryMySql($query);
-			$numrows = mysql_num_rows($result);
-			for ($i = 0;$i<$numrows;$i++){
-				$studentid = mysql_result($result, $i,'studentid');
-				$query = "UPDATE volunteers SET credits = credits + $halfcredits where id=$studentid"; //adds credits to students
-				$studenresult = queryMySql($query);
-			}
-			
-			$query = "UPDATE events SET closed=true WHERE id = '$eventid'";
-			$result = queryMySql($query);
-			
-			echo "<body><script>bootbox.alert('Event: $eventname has been closed.', function() {
+            if ($enteredpassword == "admin"){
+                $query = "SELECT * FROM events WHERE id = $eventid";
+                $result = queryMySql($query);
+                $eventname = mysql_result($result, 0,'eventname');
+                $credits = mysql_result($result, 0,'defaultcredits');
+                $halfcredits = $credits/2;
+
+                //students with full credit
+                $query = "SELECT * FROM signups where eventid=$eventid and noshow=false and waitlist=0 and withdrew=0 and halfcredit=0";
+                $result = queryMySql($query);
+                $numrows = mysql_num_rows($result);
+                for ($i = 0;$i<$numrows;$i++){
+                    $studentid = mysql_result($result, $i,'studentid');
+                    $query = "UPDATE volunteers SET credits = credits + $credits where id=$studentid"; //adds credits to students
+                    $studenresult = queryMySql($query);
+                }
+
+                //students with half credit
+                $query = "SELECT * FROM signups where eventid=$eventid and noshow=false and waitlist=0 and withdrew=0 and halfcredit=1";
+                $result = queryMySql($query);
+                $numrows = mysql_num_rows($result);
+                for ($i = 0;$i<$numrows;$i++){
+                    $studentid = mysql_result($result, $i,'studentid');
+                    $query = "UPDATE volunteers SET credits = credits + $halfcredits where id=$studentid"; //adds credits to students
+                    $studenresult = queryMySql($query);
+                }
+
+                $query = "UPDATE events SET closed=true WHERE id = '$eventid'";
+                $result = queryMySql($query);
+
+                echo "<body><script>bootbox.alert('Event: $eventname has been closed.', function() {
 				window.location.replace('dashboard.php');});</script>";
+            }else{
+                echo "<body><script>bootbox.alert('Incorrect password - Please try again.');</script>";
+            }
+			
+
 		}
 
 
@@ -181,8 +188,8 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){ //promp
 				echo "<script>alert('Error creating event. Please try again.');</script>";
 			}
 			else{
-				$eventname = $_POST['eventname'];
-				$location = $_POST['location'];
+                $eventname = sanitizeString($_POST['eventname']);
+                $location = sanitizeString($_POST['location']);
 				
 				$eventdate = $_POST[date_year].'-'.$_POST['date_month'].'-'.$_POST['date_day'];
 				
@@ -192,7 +199,7 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){ //promp
 				if ($_POST['description'] == "A brief description of the event/important info. (not required)")
 					$description = "";
 				else
-					$description = $_POST['description'];
+					$description = sanitizeString($_POST['description']);
 				
 				$defaultcredits = $_POST['credits'];
 				
@@ -370,13 +377,14 @@ END;
 			  <th>Location</th>
 		      <th>Date</th>
 		      <th>Time</th>
-		      <th>Max Volunteers</th>
+		      <th>Final/Max Volunteers</th>
 		      <th>Supervisor</th>
 		      <th>Details</th>
 		</tr>
 END;
 		$numrows = mysql_num_rows($result);
 		for ($i = 0;$i<$numrows;++$i){
+			$eventid = mysql_result($result, $i,'id');
 			echo"<tr>";
 			echo '<td>'.mysql_result($result, $i,'eventname').'</td>';
 			echo '<td>'.mysql_result($result, $i,'location').'</td>';
@@ -389,7 +397,10 @@ END;
 				echo "<td></td>";
 			}
 			else{
-				echo '<td>'.mysql_result($result, $i,'max').'</td>';
+				//show a fraction of currently signed up volunteers to max volunteers
+				$finalVolunteerQuery = "SELECT * from signups where eventid=$eventid and waitlist=0 and noshow=0 and withdrew=0 and halfcredit=0";
+				$finalVolunteers = mysql_num_rows(queryMySql($finalVolunteerQuery));
+				echo '<td>'.$finalVolunteers."/".mysql_result($result, $i,'max').'</td>';
 			}
 			echo '<td>'.mysql_result($result, $i,'supervisor').'</td>';
 

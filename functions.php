@@ -1,9 +1,9 @@
 <?php
 	
 	$server = 'localhost';
-	$username = 'cyrieu';
-	$password = 'kpcaoh33';
-	$db = 'csite';
+	$username = 'root';
+	$password = 'root';
+	$db = 'cs_db';
 	
 	mysql_connect($server,$username,$password) or die(mysql_error());
 	mysql_select_db($db) or die(mysql_error());

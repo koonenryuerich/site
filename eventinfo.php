@@ -1,6 +1,6 @@
 <?php
 $username  = 'admin';
-$password = 'kinkaidcs';
+$password = 'admin';
 $query = "";
 $result = "";
 $eventid = 0;
@@ -372,7 +372,7 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && (isset
 
 			<form  id='closeevent' style = 'display:inline;float:right' action = 'closeevent.php' method = 'post' >
 					<input type = "hidden" name = "eventid" value = "$eventid"/>
-					<input type = "hidden" name = "closeevent"/>
+					<input type = "hidden" name = "closeevent" value = "closeevent"/>
 					<button type = 'submit' class = 'btn btn-danger'>Close Event</button>
 			</form>
 

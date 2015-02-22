@@ -9,7 +9,7 @@
 $query = "";
 $result = "";
 $username  = 'admin';
-$password = 'kinkaidcs';
+$password = 'admin';
 
 if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && isset($_POST['downloadexcel'])) {
 	if ($_SERVER['PHP_AUTH_USER'] == $username && $_SERVER['PHP_AUTH_PW'] == $password){
@@ -104,11 +104,11 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && isset(
                 $eventid = mysql_result($eventsresult, $x,'id');
 
                 //checks if there is a signup enry for a the student id and an event id
-                if (mysql_num_rows(mysql_query("SELECT * FROM signups WHERE eventid = '$eventid' AND studentid = '$studentid' and waitlist=0 and noshow=false and withdrew=false"))) {
+                if (mysql_num_rows(mysql_query("SELECT * FROM signups WHERE eventid = '$eventid' AND studentid = '$studentid' and waitlist=0 and noshow=0 and withdrew=0"))) {
                     //if so, display in the column the credits earned by the student for that specific event
-                    $sheet->setCellValueByColumnAndRow($col,$row,mysql_result($eventsresult, $x,'defaultcredits'));
-                }
-                else{
+					$sheet->setCellValueByColumnAndRow($col,$row,mysql_result($eventsresult, $x,'defaultcredits'));
+				}
+				else{
                     //else put a 0 in the column
                     $sheet->setCellValueByColumnAndRow($col,$row,0);
                 }
@@ -171,7 +171,7 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && isset(
         */
         $row++;
         $col = 0;
-        $sheet->setCellValueByColumnAndRow($col,$row,'Earned required credits');
+        $sheet->setCellValueByColumnAndRow($col,$row,'Met Requirements');
         for ($i=9;$i<=12;$i++){
             $col++;
             $sheet->setCellValueByColumnAndRow($col,$row,"=COUNTIFS(C3:C$finalrow".","."$i".","."$totalcol"."3:$totalcol"."$finalrow,\">=1\")");
@@ -203,7 +203,7 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && isset(
         */
         $row++;
         $col = 0;
-        $sheet->setCellValueByColumnAndRow($col,$row,'Earned more than required credits');
+        $sheet->setCellValueByColumnAndRow($col,$row,'Surpassed requirements');
         for ($i=9;$i<=12;$i++){
             $col++;
             $sheet->setCellValueByColumnAndRow($col,$row,"=COUNTIFS(C3:C$finalrow".","."$i".","."$totalcol"."3:$totalcol"."$finalrow,\">1\")");
